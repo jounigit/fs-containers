@@ -1,0 +1,8 @@
+services:
+  todo-backend:
+    image: todo-backend:latest
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DEBUG=todo-backend:*
