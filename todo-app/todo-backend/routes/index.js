@@ -18,8 +18,10 @@ router.get('/', async (req, res) => {
 
 router.get('/statistics', async (req, res) => {
   let added_todos = await redis.getAsync("added_todos") || 0
+  console.log('Redis get: ', added_todos)
+  const formatted = String(added_todos).padStart(4, '0');
 
-  res.json({ "added_todos": Number(added_todos) })
+  res.json({ "added_todos": Number(formatted) });
 })
 
 module.exports = router;
