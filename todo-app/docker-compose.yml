@@ -36,7 +36,7 @@ services:
     ports:
       - 3000:3000
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/api/todos"]
+      test: ["CMD", "curl", "-f", "http://localhost:3000/todos"]
       interval: 5s
       timeout: 3s
       retries: 10

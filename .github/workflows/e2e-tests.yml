@@ -36,7 +36,7 @@ jobs:
           timeout 180 bash -c 'until curl -f http://localhost:8080 > /dev/null 2>&1; do sleep 2; done'
           sleep 5 # Additional wait to ensure backend is fully ready
           echo "Waiting for backend API on port 3000..."
-          timeout 180 bash -c 'until curl -f http://localhost:3000/api/todos > /dev/null 2>&1; do sleep 2; done'
+          timeout 180 bash -c 'until curl -f http://localhost:3000/todos > /dev/null 2>&1; do sleep 2; done'
           echo "All services are ready!"
           
       - name: Check running containers
