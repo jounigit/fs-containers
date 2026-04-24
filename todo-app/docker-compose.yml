@@ -9,7 +9,8 @@ services:
       - ./todo-frontend:/usr/src/app
     container_name: todo-frontend
     depends_on:
-      - server
+      server:
+        condition: service_healthy
 
   server:
     image: todo-backend
@@ -26,6 +27,14 @@ services:
     depends_on:
       - mongo
       - redis
+    ports:
+      - 3000:3000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/todos"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
 
   nginx:
     image: nginx:1.29-alpine
@@ -35,8 +44,13 @@ services:
       - 8080:80
     container_name: reverse-proxy
     depends_on:
-      - app
-      - server
+      app:
+        condition: service_healthy
+      healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:80"]
+        interval: 5s
+        timeout: 3s
+        retries: 10
 
   mongo:
     image: "mongo"
