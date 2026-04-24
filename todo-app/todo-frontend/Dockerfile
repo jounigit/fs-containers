@@ -1,7 +1,7 @@
 FROM node:24-alpine AS deps
 WORKDIR /usr/src/app
 COPY package*.json ./
-RUN npm ci --omit=dev
+RUN npm ci
 
 FROM deps AS test-stage
 COPY . .
