@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, beforeEach, expect, vi } from 'vitest';
 import type { AxiosError, AxiosRequestConfig } from 'axios';
 
@@ -34,7 +35,7 @@ vi.mock('react-hot-toast', () => ({
   },
 }));
 
-const toast = (await import('react-hot-toast')).default as {
+const toast = (await import('react-hot-toast')).default as unknown as {
   error: ReturnType<typeof vi.fn>;
 };
 
