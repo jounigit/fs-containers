@@ -1,0 +1,50 @@
+services:
+
+  app:
+    image: my-app-frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      # args:
+      #   VITE_API_URL: ${VITE_API_URL:-http://localhost:8080/api/}
+    container_name: my-app-frontend
+    depends_on:
+      - server
+  
+  server:
+    image: my-app-backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: my-app-backend
+    environment:
+      - DATABASE_URL=postgres://postgres:password@postgres:5432/mydb?sslmode=disable
+    depends_on:
+      - postgres
+
+  nginx:
+    image: nginx:1.29-alpine
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "8080:80"
+    container_name: reverse-proxy
+    depends_on:
+      - server
+      - app
+      
+  postgres:
+    image: postgres:16-alpine
+    container_name: fullstack-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydb
+    volumes:
+      - ./backend/postgresDB:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgresDB:
+
